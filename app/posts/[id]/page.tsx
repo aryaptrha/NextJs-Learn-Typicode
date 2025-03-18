@@ -1,5 +1,17 @@
 "use client";
 
+// This function tells Next.js which paths to generate at build time
+export async function generateStaticParams() {
+  // Fetch all posts to generate paths
+  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await response.json();
+  
+  // Return an array of objects, each with the id parameter
+  return posts.map((post: { id: { toString: () => any; }; }) => ({
+    id: post.id.toString(),
+  }));
+}
+
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";

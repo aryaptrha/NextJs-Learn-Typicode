@@ -1,5 +1,17 @@
 "use client";
 
+// This function tells Next.js which paths to generate at build time
+export async function generateStaticParams() {
+  // Fetch all todos to generate paths
+  const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+  const todos = await response.json();
+  
+  // Return an array of objects, each with the id parameter
+  return todos.map((todo: { id: { toString: () => any; }; }) => ({
+    id: todo.id.toString(),
+  }));
+}
+
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
