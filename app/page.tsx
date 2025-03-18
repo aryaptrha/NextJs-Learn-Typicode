@@ -26,7 +26,7 @@ export default function Home() {
       </motion.div>
 
       <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full"
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full"
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.8 }}
@@ -45,6 +45,14 @@ export default function Home() {
           description="View our albums section with elegantly designed UI components."
           icon="/window.svg" 
           bgColor="from-pink-500 to-rose-600"
+        />
+
+        <NavCard 
+          href="/todos"
+          title="Todos"
+          description="Manage your tasks with an interactive todo manager with filtering capabilities."
+          icon="/globe.svg" 
+          bgColor="from-blue-600 to-sky-600"
         />
       </motion.div>
     </motion.div>
