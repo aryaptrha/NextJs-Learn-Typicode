@@ -3,7 +3,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import ActionButton from "../Posts/ViewUserButton";
-import Link from "next/link";
 
 interface TodoCardProps {
   id: number;

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import ActionButton from "../components/Posts/ViewUserButton";
 import TodoCard from "../components/Todos/TodoCard";
 
 const base_url = "https://jsonplaceholder.typicode.com/todos";
