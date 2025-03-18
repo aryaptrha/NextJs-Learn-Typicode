@@ -28,9 +28,9 @@ interface UserData {
 }
 
 const TodoDetail = () => {
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const todoId = params.id;
-  
+
   const [todo, setTodo] = useState<TodoData | null>(null);
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -40,20 +40,28 @@ const TodoDetail = () => {
     const fetchData = async () => {
       try {
         // Fetch todo
-        const todoResponse = await fetch(`https://jsonplaceholder.typicode.com/todos/${todoId}`);
+        const todoResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/todos/${todoId}`
+        );
         const todoData: TodoData = await todoResponse.json();
         setTodo(todoData);
-        
+
         // Fetch user
-        const userResponse = await fetch(`https://jsonplaceholder.typicode.com/users/${todoData.userId}`);
+        const userResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${todoData.userId}`
+        );
         const userData: UserData = await userResponse.json();
         setUser(userData);
-        
+
         // Fetch other todos from same user
-        const userTodosResponse = await fetch(`https://jsonplaceholder.typicode.com/users/${todoData.userId}/todos`);
+        const userTodosResponse = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${todoData.userId}/todos`
+        );
         const userTodosData: TodoData[] = await userTodosResponse.json();
-        setUserTodos(userTodosData.filter(t => t.id !== todoData.id).slice(0, 5)); // Exclude current todo and limit to 5
-        
+        setUserTodos(
+          userTodosData.filter((t) => t.id !== todoData.id).slice(0, 5)
+        ); // Exclude current todo and limit to 5
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -106,14 +114,19 @@ const TodoDetail = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 mr-2" 
-              fill="none" 
-              viewBox="0 0 24 24" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
             </svg>
             Back to Todos
           </motion.button>
@@ -121,26 +134,55 @@ const TodoDetail = () => {
       </motion.div>
 
       <div className="max-w-4xl mx-auto">
-        <motion.div 
+        <motion.div
           className="bg-gray-800 rounded-xl shadow-lg p-6 mb-8 relative overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           {/* Status indicator */}
-          <div className={`absolute right-0 top-0 w-20 h-20 ${todo.completed ? "bg-green-500" : "bg-yellow-500"}`} style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}></div>
-          
-          <div className="flex items-center mb-6">
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
+          <div
+            className={`absolute right-0 top-0 w-20 h-20 ${
               todo.completed ? "bg-green-500" : "bg-yellow-500"
-            }`}>
+            }`}
+            style={{ clipPath: "polygon(100% 0, 0 0, 100% 100%)" }}
+          ></div>
+
+          <div className="flex items-center mb-6">
+            <div
+              className={`w-12 h-12 rounded-full flex items-center justify-center mr-4 ${
+                todo.completed ? "bg-green-500" : "bg-yellow-500"
+              }`}
+            >
               {todo.completed ? (
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"></path>
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  ></path>
                 </svg>
               ) : (
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
                 </svg>
               )}
             </div>
@@ -151,38 +193,46 @@ const TodoDetail = () => {
               <h1 className="text-2xl font-bold text-white">{todo.title}</h1>
             </div>
           </div>
-          
+
           <div className="mt-8">
             <h2 className="text-xl font-semibold text-white mb-4">Status</h2>
             <div className="flex items-center p-4 bg-gray-700 rounded-lg">
-              <div className={`w-3 h-3 rounded-full ${todo.completed ? "bg-green-500" : "bg-yellow-500"} mr-3`}></div>
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  todo.completed ? "bg-green-500" : "bg-yellow-500"
+                } mr-3`}
+              ></div>
               <span className="text-white">
                 {todo.completed ? "Completed" : "Pending"}
               </span>
             </div>
           </div>
         </motion.div>
-        
+
         {/* User information */}
         {user && (
-          <motion.div 
+          <motion.div
             className="bg-gray-800 rounded-xl shadow-lg p-6 mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
           >
-            <h2 className="text-xl font-semibold text-white mb-4">Assigned to</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">
+              Assigned to
+            </h2>
             <div className="bg-gray-700 rounded-lg p-4">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl mr-4">
                   {user.name.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-white">{user.name}</h3>
+                  <h3 className="text-lg font-medium text-white">
+                    {user.name}
+                  </h3>
                   <p className="text-gray-400">@{user.username}</p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div className="p-3 bg-gray-800 rounded-lg">
                   <p className="text-gray-400 text-sm">Email</p>
@@ -204,30 +254,40 @@ const TodoDetail = () => {
             </div>
           </motion.div>
         )}
-        
+
         {/* Other todos from the same user */}
         {userTodos.length > 0 && (
-          <motion.div 
+          <motion.div
             className="bg-gray-800 rounded-xl shadow-lg p-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            <h2 className="text-xl font-semibold text-white mb-4">Other todos from this user</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">
+              Other todos from this user
+            </h2>
             <div className="space-y-3">
               {userTodos.map((otherTodo) => (
                 <Link href={`/todos/${otherTodo.id}`} key={otherTodo.id}>
-                  <motion.div 
+                  <motion.div
                     className={`p-4 rounded-lg border-l-4 ${
-                      otherTodo.completed ? "border-green-500 bg-gray-700/50" : "border-yellow-500 bg-gray-700/50"
+                      otherTodo.completed
+                        ? "border-green-500 bg-gray-700/50"
+                        : "border-yellow-500 bg-gray-700/50"
                     } hover:bg-gray-700 transition-colors cursor-pointer`}
                     whileHover={{ scale: 1.01 }}
                   >
                     <div className="flex items-center">
-                      <div className={`w-4 h-4 rounded-full ${
-                        otherTodo.completed ? "bg-green-500" : "bg-yellow-500"
-                      } mr-3`}></div>
-                      <h3 className={`text-white ${otherTodo.completed ? "line-through opacity-70" : ""}`}>
+                      <div
+                        className={`w-4 h-4 rounded-full ${
+                          otherTodo.completed ? "bg-green-500" : "bg-yellow-500"
+                        } mr-3`}
+                      ></div>
+                      <h3
+                        className={`text-white ${
+                          otherTodo.completed ? "line-through opacity-70" : ""
+                        }`}
+                      >
                         {otherTodo.title}
                       </h3>
                     </div>
@@ -235,7 +295,7 @@ const TodoDetail = () => {
                 </Link>
               ))}
             </div>
-            
+
             <div className="mt-4 text-center">
               <Link href={`/users/${todo.userId}`} passHref>
                 <motion.button
