@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 
 const base_url = "https://jsonplaceholder.typicode.com/albums";
@@ -181,10 +182,12 @@ const Albums = () => {
                         }}
                       >
                         <div className="relative h-40 w-full bg-gray-700">
-                          <img 
+                          <Image 
                             src={photo.thumbnailUrl} 
-                            alt={photo.title} 
-                            className="h-full w-full object-cover"
+                            alt={photo.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
                         </div>
                         <div className="p-4">

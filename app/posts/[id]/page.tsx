@@ -20,6 +20,25 @@ interface Comment {
   body: string;
 }
 
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
+  username: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+  address: {
+    city: string;
+    street: string;
+    suite: string;
+    zipcode: string;
+  };
+}
+
 const PostDetail = () => {
   const params = useParams();
   const postId = params.id;
@@ -27,7 +46,7 @@ const PostDetail = () => {
   const [post, setPost] = useState<PostData | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserData | null>(null);
 
   useEffect(() => {
     const fetchPostData = async () => {
